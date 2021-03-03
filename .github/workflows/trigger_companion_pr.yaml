@@ -1,0 +1,24 @@
+on:
+  pull_request:
+    types: [assigned, opened, synchronize, reopened, labeled, unlabeled, closed]
+
+jobs:
+  companion-pr:
+    runs-on: ubuntu-latest
+    #if: github.event.label.name == 'ready'
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: trigger-companion-pr-action
+        id: trigger-companion-pr-action
+        uses: AnacondaRecipes/feedstock-pr-handle-action@devel
+  #       with:
+  #         github_token: ${{ secrets.GITHUB_TOKEN }}
+  # delete-branch:
+  #   runs-on: ubuntu-latest
+  #   if: github.event.name == 'closed'
+  #   steps:
+  #     - name: delete branch
+  #       uses: SvanBoxel/delete-merged-branch@main
+  #       env:
+  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
