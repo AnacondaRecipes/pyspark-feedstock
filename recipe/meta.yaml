@@ -50,7 +50,7 @@ test:
     - pyspark.streaming
 
 about:
-  home: http://spark.apache.org/
+  home: https://spark.apache.org/
   license: Apache-2.0
   license_family: Apache
   # Not yet available in the pypi release
