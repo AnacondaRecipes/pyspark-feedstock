@@ -12,7 +12,8 @@ source:
     - 0001-Disable-symlinks-on-Windows.patch
 
 build:
-  skip: True  # [py<36]
+  # the s390x platform is not supported at this time
+  skip: True  # [py<36 or s390x]
   noarch: python
   number: 0
   script: '{{ PYTHON }} -m pip install . --no-deps --ignore-installed -vv '
