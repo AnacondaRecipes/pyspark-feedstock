@@ -13,7 +13,7 @@ source:
 
 build:
   # the s390x platform is not supported at this time
-  skip: True  # [py<36 or s390x]
+  skip: True  # [s390x]
   noarch: python
   number: 0
   script: '{{ PYTHON }} -m pip install . --no-deps --ignore-installed -vv '
@@ -33,7 +33,7 @@ requirements:
     - pandas >=0.23.2
     - py4j ==0.10.9.2
     - pyarrow >=1.0.0
-    - python
+    - python >=3.6
 
 test:
   commands:
@@ -52,6 +52,7 @@ test:
     - pyspark.streaming
   requires:
     - pip
+    - python <3.10
 
 about:
   home: https://spark.apache.org/
