@@ -64,7 +64,6 @@ test:
     - pyspark.licenses
     - pyspark.resource
   requires:
-    - bash
     - pip
   commands:
     - pip check
