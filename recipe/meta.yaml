@@ -1,5 +1,5 @@
 {% set name = "pyspark" %}
-{% set version = "4.0.1" %}
+{% set version = "4.1.1" %}
 
 package:
   name: {{ name|lower }}
@@ -7,15 +7,14 @@ package:
 
 source:
   - url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-    sha256: 9d1f22d994f60369228397e3479003ffe2dd736ba79165003246ff7bd48e2c73
+    sha256: 77f78984aa84fbe865c717dd37b49913b4e5c97d76ef6824f932f1aefa6621ec
   # get LICENSE from the GH repo
   - url: https://raw.githubusercontent.com/apache/spark/refs/tags/v{{ version }}/LICENSE
-    sha256: c2adf48f12e044a7755b0a12d6c9679b394d3e345934cd668db7c13a9eb22ff1
+    sha256: b8ea0873b8410497804dbb19dac00ffa5017d2ab33582b9e7ce46692fa4a0da1
 
 build:
   number: 0
-  # pyarrow isn't available on s390x.
-  skip: True  # [py<39 or s390x]
+  skip: True  # [py<310]
   script: {{ PYTHON }} -m pip install . --no-deps --no-build-isolation --ignore-installed -vv
 
 requirements:
@@ -26,19 +25,21 @@ requirements:
     - wheel
   run:
     - python
-    - py4j ==0.10.9.9
+    - py4j >=0.10.9.7,<0.10.9.10
     # extras_require dependencies are kept here
     # as runtime dependencies because previously
     # were set as such
     - numpy >=1.21
-    - pandas >=2.0.0
-    - pyarrow >=11.0.0
+    - pandas >=2.2.0
+    - pyarrow >=15.0.0
   run_constrained:
     # We haven't previously included the "connect" extras, 
     # so we can keep these in run_constrained.
-    - grpcio >=1.67.0
-    - grpcio-status >=1.67.0
-    - googleapis-common-protos >=1.65.0
+    - grpcio >=1.76.0
+    - grpcio-status >=1.76.0
+    - googleapis-common-protos >=1.71.0
+    - pyyaml >=3.11
+    - zstandard >=0.25.0
 
 test:
   imports:
@@ -88,7 +89,7 @@ test:
     - where *spark*                                     # [win]
 
 about:
-  home: https://spark.apache.org/
+  home: https://spark.apache.org
   license: Apache-2.0
   license_family: Apache
   license_file: LICENSE
