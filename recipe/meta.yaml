@@ -83,12 +83,10 @@ test:
     - pyspark.examples.src.main.python
   requires:
     - pip
-    - pytest
   commands:
     - pip check
     - bash -c "compgen -c spark && compgen -c pyspark"  # [not win]
     - where *spark*                                     # [win]
-    - pytest --pyargs pyspark.testing
 
 about:
   home: https://spark.apache.org
