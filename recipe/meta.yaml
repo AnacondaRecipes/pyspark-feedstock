@@ -30,7 +30,8 @@ requirements:
     # as runtime dependencies because previously
     # were set as such
     - numpy >=1.21
-    - pandas >=2.2.0
+    # Pyspark 4.1.1 is not compatible with pandas 3.0.0
+    - pandas >=2.2.0,<3
     - pyarrow >=15.0.0
   run_constrained:
     # We haven't previously included the "connect" extras, 
