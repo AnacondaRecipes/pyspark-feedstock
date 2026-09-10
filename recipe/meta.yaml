@@ -28,10 +28,10 @@ requirements:
     - python
     - py4j >=0.10.9.7,<0.10.9.10
   run_constrained:
-    - numpy >=1.21
+    - numpy >=1.22
     # Pyspark 4.2.0 is not compatible with pandas 3.0.0
     # https://spark.apache.org/docs/latest/api/python/getting_started/install.html#optional-dependencies
-    - pandas >=2.2.0,<3
+    - pandas >=2.2.0,<3.0.0
     - pyarrow >=18.0.0
     - grpcio >=1.76.0
     - grpcio-status >=1.76.0
