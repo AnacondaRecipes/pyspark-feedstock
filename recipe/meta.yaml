@@ -1,22 +1,23 @@
 {% set name = "pyspark" %}
-{% set version = "4.1.1" %}
+{% set version = "4.2.0" %}
 
 package:
-  name: {{ name|lower }}
+  name: {{ name }}
   version: {{ version }}
 
 source:
   - url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-    sha256: 77f78984aa84fbe865c717dd37b49913b4e5c97d76ef6824f932f1aefa6621ec
+    sha256: 5ad689d53570ee1674193fd4f9bda065f0db3be9363a27d2a3406cc457b70b61
   # get LICENSE from the GH repo
   - url: https://raw.githubusercontent.com/apache/spark/refs/tags/v{{ version }}/LICENSE
     sha256: b8ea0873b8410497804dbb19dac00ffa5017d2ab33582b9e7ce46692fa4a0da1
 
 build:
   number: 0
-  skip: True  # [py<310]
+  skip: true  # [py<310]
   script: {{ PYTHON }} -m pip install . --no-deps --no-build-isolation --ignore-installed -vv
 
+# upstream is https://pypi.org/project/pyspark/, setup.py
 requirements:
   host:
     - pip
@@ -26,41 +27,53 @@ requirements:
   run:
     - python
     - py4j >=0.10.9.7,<0.10.9.10
-    # extras_require dependencies are kept here
-    # as runtime dependencies because previously
-    # were set as such
-    - numpy >=1.21
-    # Pyspark 4.1.1 is not compatible with pandas 3.0.0
-    - pandas >=2.2.0,<3
-    - pyarrow >=15.0.0
   run_constrained:
-    # We haven't previously included the "connect" extras, 
-    # so we can keep these in run_constrained.
+    - numpy >=1.22
+    # Pyspark 4.2.0 is not compatible with pandas 3.0.0
+    # https://spark.apache.org/docs/latest/api/python/getting_started/install.html#optional-dependencies
+    - pandas >=2.2.0,<3.0.0
+    - pyarrow >=18.0.0
     - grpcio >=1.76.0
     - grpcio-status >=1.76.0
     - googleapis-common-protos >=1.71.0
-    - pyyaml >=3.11
     - zstandard >=0.25.0
+    - pyyaml >=3.11
+    - graphviz >=0.20
 
 test:
   imports:
     - pyspark
+    - pyspark.core
     - pyspark.cloudpickle
     - pyspark.mllib
-    # pyspark.ml.connect requires optional "connect" extras (gRPC)
     - pyspark.mllib.linalg
     - pyspark.mllib.stat
     - pyspark.ml
+    - pyspark.ml.connect
     - pyspark.ml.linalg
     - pyspark.ml.param
     - pyspark.ml.torch
     - pyspark.ml.deepspeed
     - pyspark.sql
-    # imports relative to connect are removed because is an extra
     - pyspark.sql.avro
+    - pyspark.sql.classic
+    - pyspark.sql.connect
+    - pyspark.sql.connect.avro
+    - pyspark.sql.connect.client
+    - pyspark.sql.connect.functions
+    - pyspark.sql.connect.proto
+    - pyspark.sql.connect.protobuf
+    - pyspark.sql.connect.resource
+    - pyspark.sql.connect.shell
+    - pyspark.sql.connect.streaming
+    - pyspark.sql.connect.streaming.worker
+    - pyspark.sql.functions
     - pyspark.sql.pandas
+    - pyspark.sql.plot
     - pyspark.sql.protobuf
     - pyspark.sql.streaming
+    - pyspark.sql.streaming.proto
+    - pyspark.sql.worker
     - pyspark.streaming
     - pyspark.bin
     - pyspark.sbin
@@ -73,6 +86,7 @@ test:
     - pyspark.pandas.spark
     - pyspark.pandas.typedef
     - pyspark.pandas.usage_logging
+    - pyspark.pipelines
     - pyspark.python.pyspark
     - pyspark.python.lib
     - pyspark.testing
@@ -82,8 +96,18 @@ test:
     - pyspark.errors
     - pyspark.errors.exceptions
     - pyspark.examples.src.main.python
+    - pyspark.logger
   requires:
     - pip
+    - numpy >=1.22
+    - pandas >=2.2.0,<3
+    - pyarrow >=18.0.0
+    - grpcio >=1.76.0
+    - grpcio-status >=1.76.0
+    - googleapis-common-protos >=1.71.0
+    - zstandard >=0.25.0
+    - pyyaml >=3.11
+    - graphviz >=0.20
   commands:
     - pip check
     - bash -c "compgen -c spark && compgen -c pyspark"  # [not win]
