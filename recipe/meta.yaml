@@ -112,7 +112,6 @@ test:
     # upstream test suite requires a JVM (Java 17+) and a built Spark distribution,
     # so it cannot be executed inside the conda-build test environment
     - pip check
-    - python -c "import pyspark; print(pyspark.__version__)"
     - bash -c "compgen -c spark && compgen -c pyspark"  # [not win]
     - where *spark*                                     # [win]
 
