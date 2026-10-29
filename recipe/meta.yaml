@@ -17,7 +17,7 @@ build:
   skip: true  # [py<310]
   script: {{ PYTHON }} -m pip install . --no-deps --no-build-isolation --ignore-installed -vv
 
-# upstream is https://pypi.org/project/pyspark/, setup.py
+# upstream: https://github.com/apache/spark/blob/v4.2.1/python/packaging/classic/setup.py
 requirements:
   host:
     - pip
