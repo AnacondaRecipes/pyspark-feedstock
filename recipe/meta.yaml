@@ -1,5 +1,5 @@
 {% set name = "pyspark" %}
-{% set version = "4.2.0" %}
+{% set version = "4.2.1" %}
 
 package:
   name: {{ name }}
@@ -7,7 +7,7 @@ package:
 
 source:
   - url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-    sha256: 5ad689d53570ee1674193fd4f9bda065f0db3be9363a27d2a3406cc457b70b61
+    sha256: d79b7c8ee41e66a9202fe6f600ca90b931ca571ae9dbdf31c58d2672e5102da0
   # get LICENSE from the GH repo
   - url: https://raw.githubusercontent.com/apache/spark/refs/tags/v{{ version }}/LICENSE
     sha256: b8ea0873b8410497804dbb19dac00ffa5017d2ab33582b9e7ce46692fa4a0da1
@@ -29,7 +29,7 @@ requirements:
     - py4j >=0.10.9.7,<0.10.9.10
   run_constrained:
     - numpy >=1.22
-    # Pyspark 4.2.0 is not compatible with pandas 3.0.0
+    # Pyspark does not support pandas 3.x yet
     # https://spark.apache.org/docs/latest/api/python/getting_started/install.html#optional-dependencies
     - pandas >=2.2.0,<3.0.0
     - pyarrow >=18.0.0
@@ -109,7 +109,10 @@ test:
     - pyyaml >=3.11
     - graphviz >=0.20
   commands:
+    # upstream test suite requires a JVM (Java 17+) and a built Spark distribution,
+    # so it cannot be executed inside the conda-build test environment
     - pip check
+    - python -c "import pyspark; print(pyspark.__version__)"
     - bash -c "compgen -c spark && compgen -c pyspark"  # [not win]
     - where *spark*                                     # [win]
 
